@@ -3,41 +3,55 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>FF Quiz + Daily Challenges</title>
+  <title>FF Daily Challenges</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <header class="header">
-    <h1>Free Fire Quiz & Points</h1>
+  <div class="bg"></div>
+
+  <header class="top">
+    <div class="brand">
+      <div class="logo">FF</div>
+      <div>
+        <div class="title">Free Fire Daily</div>
+        <div class="sub">تحديات يومية + متجر جواهر</div>
+      </div>
+    </div>
+
     <nav class="nav">
-      <a class="active" href="index.html">الرئيسية</a>
+      <a class="active" href="index.html">التحديات</a>
       <a href="store.html">المتجر</a>
     </nav>
   </header>
 
-  <section class="stats">
-    ⭐ نقاطك: <span id="points">0</span>
-    <span class="sep">|</span>
-    💎 جواهرك: <span id="gems">0</span>
-  </section>
+  <main class="wrap">
+    <section class="panel stats">
+      <div class="stat">
+        <div class="k">⭐ النقاط</div>
+        <div class="v" id="points">0</div>
+      </div>
+      <div class="stat">
+        <div class="k">💎 الجواهر</div>
+        <div class="v" id="gems">0</div>
+      </div>
+      <div class="stat">
+        <div class="k">📅 تحديات اليوم</div>
+        <div class="v"><span id="todayKey">----</span></div>
+      </div>
+    </section>
 
-  <main class="container">
-    <h2>تحديات اليوم (10)</h2>
-    <p class="hint">كل تحدي = 100 نقطة ✅</p>
+    <section class="panel">
+      <div class="panelHead">
+        <h2>🔥 10 تحديات اليوم</h2>
+        <div class="pill">كل تحدي = +100 نقطة</div>
+      </div>
 
-    <div id="challenges" class="list"></div>
+      <div id="challenges" class="grid"></div>
 
-    <hr class="hr" />
-
-    <h2>أسئلة فري فاير (تجريبية)</h2>
-    <p class="hint">جاوب صح تاخد +50 نقطة (اختياري)</p>
-
-    <div class="card">
-      <p id="qText">...</p>
-      <div id="qAnswers" class="answers"></div>
-      <p id="qMsg" class="msg"></p>
-      <button id="nextQ" class="btn">سؤال جديد</button>
-    </div>
+      <div class="footNote">
+        التحديات تتجدد تلقائيًا كل يوم. النقاط والجواهر محفوظة في نفس الجهاز.
+      </div>
+    </section>
   </main>
 
   <script src="app.js"></script>
