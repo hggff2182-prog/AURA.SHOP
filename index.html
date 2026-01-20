@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>FF Quiz + Daily Challenges</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="header">
+    <h1>Free Fire Quiz & Points</h1>
+    <nav class="nav">
+      <a class="active" href="index.html">الرئيسية</a>
+      <a href="store.html">المتجر</a>
+    </nav>
+  </header>
+
+  <section class="stats">
+    ⭐ نقاطك: <span id="points">0</span>
+    <span class="sep">|</span>
+    💎 جواهرك: <span id="gems">0</span>
+  </section>
+
+  <main class="container">
+    <h2>تحديات اليوم (10)</h2>
+    <p class="hint">كل تحدي = 100 نقطة ✅</p>
+
+    <div id="challenges" class="list"></div>
+
+    <hr class="hr" />
+
+    <h2>أسئلة فري فاير (تجريبية)</h2>
+    <p class="hint">جاوب صح تاخد +50 نقطة (اختياري)</p>
+
+    <div class="card">
+      <p id="qText">...</p>
+      <div id="qAnswers" class="answers"></div>
+      <p id="qMsg" class="msg"></p>
+      <button id="nextQ" class="btn">سؤال جديد</button>
+    </div>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
