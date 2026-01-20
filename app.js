@@ -105,3 +105,4 @@ function shuffle(arr) {
 
 function getDailySet() {
   const user
+  renderUserBox();
