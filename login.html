@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>تسجيل الدخول - AURA SHOP</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <div class="bg"></div>
+
+  <div class="card">
+    <h1 class="h1">AURA SHOP 🔥</h1>
+    <p class="muted">اكتب اسمك بس عشان نحفظ نقاطك ونفتح الواجهة</p>
+
+    <div class="loginBox">
+      <input id="nameInput" class="input" placeholder="اسمك داخل الموقع..." maxlength="20" />
+      <button id="loginBtn" class="btn">دخول</button>
+    </div>
+
+    <p class="tiny">ما في إيميل ولا باسورد — اسم بس ✅</p>
+  </div>
+
+  <script src="app.js"></script>
+  <script>
+    // لو داخل مسبقاً، حوله مباشرة للواجهة
+    if (getUser()) location.href = "index.html";
+
+    document.getElementById("loginBtn").onclick = () => {
+      const v = document.getElementById("nameInput").value.trim();
+      if (v.length < 2) return alert("اكتب اسم صحيح (حرفين أو أكثر)");
+      setUser(v);
+      location.href = "index.html";
+    };
+  </script>
+
+</body>
+</html>
