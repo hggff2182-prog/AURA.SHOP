@@ -1,60 +1,156 @@
-body{
-  margin:0;
-  font-family: system-ui, Arial;
-  background:#0b1020;
-  color:#fff;
+// ===== FF Daily Challenges + Points + Store =====
+
+const DAILY_COUNT = 10;
+const POINTS_PER_CHALLENGE = 100;
+
+const SHOP_COST_POINTS = 5000;
+const SHOP_GEMS_AMOUNT = 100;
+
+// تحديات فري فاير (زِد براحتك)
+const ALL_CHALLENGES = [
+  "العب مباراة كلاسيك واحدة",
+  "العب مباراة رانك واحدة",
+  "اقتُل 5 أعداء اليوم",
+  "اعمل 2 Headshots اليوم",
+  "استخدم 3 Gloo Walls في مباراة",
+  "اجمع درع Level 3 مرة",
+  "افتح 3 صناديق Loot",
+  "وصل للـ Top 10 مرة",
+  "اعمل Revive لزميل مرة",
+  "اكسب Booyah مرة واحدة",
+  "اقتل بسلاح AR مرتين",
+  "اقتل بسلاح SMG مرتين",
+  "اقتل بسلاح Shotgun مرة",
+  "اقتل بسنايبر مرة",
+  "استعمل 2 Medkits",
+  "اعمل 300+ Damage في مباراة",
+  "اركب سيارة مرة",
+  "العب مع سكواد مباراة",
+  "اجمع 200 Ammo زيادة",
+  "عيش 8 دقائق في مباراة"
+];
+
+// مفاتيح التخزين
+const K = {
+  points: "ff_points",
+  gems: "ff_gems",
+  daily: "ff_daily"
+};
+
+const todayKey = new Date().toISOString().split("T")[0];
+
+// أدوات
+function getNum(key, fallback = 0) {
+  const v = localStorage.getItem(key);
+  const n = v === null ? fallback : Number(v);
+  return Number.isFinite(n) ? n : fallback;
 }
-.header{
-  padding:16px;
-  background:#0f1730;
-  border-bottom:1px solid rgba(255,255,255,.1);
+function setNum(key, value) {
+  localStorage.setItem(key, String(value));
 }
-.header h1{margin:0 0 10px 0;font-size:18px}
-.nav a{
-  text-decoration:none;
-  color:#cfd6ff;
-  margin-left:10px;
-  padding:8px 12px;
-  border-radius:10px;
-  background:rgba(255,255,255,.06);
+function shuffle(arr) {
+  return [...arr].sort(() => Math.random() - 0.5);
 }
-.nav a.active{background:#2a3cff;color:#fff}
-.stats{
-  padding:12px 16px;
-  background:rgba(255,255,255,.04);
+
+// تحميل الرصيد
+let points = getNum(K.points, 0);
+let gems = getNum(K.gems, 0);
+
+// تحديات اليوم
+let daily = JSON.parse(localStorage.getItem(K.daily) || "null");
+if (!daily || daily.date !== todayKey) {
+  daily = {
+    date: todayKey,
+    challenges: shuffle(ALL_CHALLENGES).slice(0, DAILY_COUNT),
+    completed: []
+  };
+  localStorage.setItem(K.daily, JSON.stringify(daily));
 }
-.sep{opacity:.5;margin:0 10px}
-.container{padding:16px;max-width:900px;margin:auto}
-.hint{opacity:.8}
-.list{display:grid;gap:10px;margin-top:12px}
-.challenge{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:10px;
-  padding:12px;
-  border-radius:14px;
-  background:rgba(255,255,255,.06);
-  border:1px solid rgba(255,255,255,.08);
+
+// تحديث التاريخ في الواجهة
+const todayEl = document.getElementById("todayKey");
+if (todayEl) todayEl.textContent = todayKey;
+
+// تحديث النقاط والجواهر في الواجهة
+const pointsEl = document.getElementById("points");
+const gemsEl = document.getElementById("gems");
+if (pointsEl) pointsEl.textContent = points;
+if (gemsEl) gemsEl.textContent = gems;
+
+// رسم التحديات (في index)
+const challengesEl = document.getElementById("challenges");
+if (challengesEl) {
+  challengesEl.innerHTML = "";
+
+  daily.challenges.forEach((text, i) => {
+    const done = daily.completed.includes(i);
+
+    const div = document.createElement("div");
+    div.className = "cardCh";
+    div.innerHTML = `
+      <div>
+        <div class="chTitle">${text}</div>
+        <div class="chMeta">
+          <span class="badge">+${POINTS_PER_CHALLENGE}</span>
+          <span class="badge">${done ? "مكتمل" : "جاهز"}</span>
+        </div>
+      </div>
+      <button class="btn" ${done ? "disabled" : ""} data-i="${i}">
+        ${done ? "تم ✅" : "نفّذت"}
+      </button>
+    `;
+    challengesEl.appendChild(div);
+  });
+
+  challengesEl.addEventListener("click", (e) => {
+    const btn = e.target.closest("button[data-i]");
+    if (!btn) return;
+    completeChallenge(Number(btn.dataset.i));
+  });
 }
-.ch-text{font-size:15px}
-.btn, .ch-btn{
-  border:0;
-  padding:10px 14px;
-  border-radius:12px;
-  background:#2a3cff;
-  color:#fff;
-  cursor:pointer;
+
+function completeChallenge(i) {
+  if (daily.completed.includes(i)) return;
+
+  daily.completed.push(i);
+  localStorage.setItem(K.daily, JSON.stringify(daily));
+
+  points += POINTS_PER_CHALLENGE;
+  setNum(K.points, points);
+
+  if (pointsEl) pointsEl.textContent = points;
+
+  const btn = document.querySelector(`button[data-i="${i}"]`);
+  if (btn) {
+    btn.disabled = true;
+    btn.textContent = "تم ✅";
+  }
 }
-.ch-btn[disabled]{opacity:.6;cursor:not-allowed}
-.card{
-  margin-top:12px;
-  padding:14px;
-  border-radius:14px;
-  background:rgba(255,255,255,.06);
-  border:1px solid rgba(255,255,255,.08);
+
+// متجر (في store)
+const buyBtn = document.getElementById("buyGemsBtn");
+const shopMsg = document.getElementById("shopMsg");
+
+if (buyBtn) {
+  buyBtn.addEventListener("click", () => {
+    if (points < SHOP_COST_POINTS) {
+      if (shopMsg) shopMsg.textContent = "نقاطك ما كفاية 😅 لازم 5000";
+      return;
+    }
+
+    points -= SHOP_COST_POINTS;
+    gems += SHOP_GEMS_AMOUNT;
+
+    setNum(K.points, points);
+    setNum(K.gems, gems);
+
+    if (pointsEl) pointsEl.textContent = points;
+    if (gemsEl) gemsEl.textContent = gems;
+
+    if (shopMsg) shopMsg.textContent = `تم الشراء ✅ +${SHOP_GEMS_AMOUNT} 💎`;
+    setTimeout(() => { if (shopMsg) shopMsg.textContent = ""; }, 2500);
+  });
 }
-.hr{border:0;border-top:1px solid rgba(255,255,255,.12);margin:18px 0}
-.answers{display:grid;gap:8px;margin:10px 0}
-.msg{min-height:20px;opacity:.9}
-.danger{background:#ff3b3b}
+
+// Reset اختياري
+win
