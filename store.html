@@ -2,76 +2,56 @@
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>FF Store</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>المتجر - AURA SHOP</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <div class="bg"></div>
 
   <header class="top">
     <div class="brand">
       <div class="logo">FF</div>
       <div>
-        <div class="title">FF Store</div>
-        <div class="sub">حوّل نقاطك لجواهر</div>
+        <div class="title">AURA SHOP</div>
+        <div class="sub">متجر الجواهر</div>
       </div>
     </div>
 
-    <nav class="nav">
-      <a href="index.html">التحديات</a>
-      <a class="active" href="store.html">المتجر</a>
-    </nav>
+    <div id="userBox" class="user-box"></div>
   </header>
 
+  <nav class="nav">
+    <a href="index.html">الرئيسية</a>
+    <a href="store.html" class="active">المتجر</a>
+  </nav>
+
   <main class="wrap">
-    <section class="panel stats">
-      <div class="stat">
-        <div class="k">⭐ النقاط</div>
-        <div class="v" id="points">0</div>
-      </div>
-      <div class="stat">
-        <div class="k">💎 الجواهر</div>
-        <div class="v" id="gems">0</div>
-      </div>
-      <div class="stat">
-        <div class="k">📅 اليوم</div>
-        <div class="v"><span id="todayKey">----</span></div>
-      </div>
-    </section>
+    <div class="stats">
+      <div class="pill">⭐ نقاطك: <b id="pointsText">0</b></div>
+      <div class="pill">💎 جواهرك: <b id="gemsText">0</b></div>
+    </div>
 
-    <section class="panel">
-      <div class="panelHead">
-        <h2>🛒 عروض الجواهر</h2>
-        <div class="pill">100 💎 مقابل 5000 ⭐</div>
-      </div>
+    <section class="card">
+      <h2 class="h2">العروض</h2>
 
-      <div class="shopGrid">
-        <div class="shopCard">
-          <div class="shopTop">
+      <div class="shop-grid">
+        <div class="shop-item">
+          <div class="shop-top">
             <div class="gem">💎</div>
             <div>
-              <div class="shopTitle">100 جوهرة</div>
-              <div class="shopSub">السعر: <b>5000</b> نقطة</div>
+              <div class="shop-title">100 جوهرة</div>
+              <div class="shop-sub">السعر: 5000 نقطة</div>
             </div>
           </div>
 
-          <button id="buyGemsBtn" class="btn">شراء الآن</button>
-          <div id="shopMsg" class="msg"></div>
-        </div>
-
-        <div class="shopCard soft">
-          <div class="shopTitle">ملاحظة</div>
-          <div class="shopSub">
-            الجواهر هنا داخل موقعك فقط (نظام نقاط تحفيزي).
-          </div>
-          <button class="btn danger" onclick="ffResetAll()">Reset (اختياري)</button>
-          <div class="msg dim">يمسح نقاطك/جواهرك من نفس الجهاز.</div>
+          <button class="btn" onclick="buyGems(100, 5000)">شراء</button>
+          <div class="note" id="shopMsg"></div>
         </div>
       </div>
     </section>
+
   </main>
 
-  <script src="app.js"></script>
+  <script src="store.js"></script>
 </body>
 </html>
