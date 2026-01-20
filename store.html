@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>المتجر</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="header">
+    <h1>المتجر</h1>
+    <nav class="nav">
+      <a href="index.html">الرئيسية</a>
+      <a class="active" href="store.html">المتجر</a>
+    </nav>
+  </header>
+
+  <section class="stats">
+    ⭐ نقاطك: <span id="points">0</span>
+    <span class="sep">|</span>
+    💎 جواهرك: <span id="gems">0</span>
+  </section>
+
+  <main class="container">
+    <div class="card">
+      <h2>شراء جواهر</h2>
+      <p>💎 100 جوهرة</p>
+      <p>السعر: <b>5000</b> نقطة</p>
+      <button id="buyGemsBtn" class="btn">شراء</button>
+      <p id="shopMsg" class="msg"></p>
+    </div>
+
+    <div class="card">
+      <h3>زر إعادة ضبط (اختياري)</h3>
+      <p class="hint">يمسح نقاطك وتحدياتك من هذا الجهاز فقط.</p>
+      <button class="btn danger" onclick="dqResetAll()">Reset</button>
+    </div>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
