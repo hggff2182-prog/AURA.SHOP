@@ -3,38 +3,73 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>المتجر</title>
+  <title>FF Store</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <header class="header">
-    <h1>المتجر</h1>
+  <div class="bg"></div>
+
+  <header class="top">
+    <div class="brand">
+      <div class="logo">FF</div>
+      <div>
+        <div class="title">FF Store</div>
+        <div class="sub">حوّل نقاطك لجواهر</div>
+      </div>
+    </div>
+
     <nav class="nav">
-      <a href="index.html">الرئيسية</a>
+      <a href="index.html">التحديات</a>
       <a class="active" href="store.html">المتجر</a>
     </nav>
   </header>
 
-  <section class="stats">
-    ⭐ نقاطك: <span id="points">0</span>
-    <span class="sep">|</span>
-    💎 جواهرك: <span id="gems">0</span>
-  </section>
+  <main class="wrap">
+    <section class="panel stats">
+      <div class="stat">
+        <div class="k">⭐ النقاط</div>
+        <div class="v" id="points">0</div>
+      </div>
+      <div class="stat">
+        <div class="k">💎 الجواهر</div>
+        <div class="v" id="gems">0</div>
+      </div>
+      <div class="stat">
+        <div class="k">📅 اليوم</div>
+        <div class="v"><span id="todayKey">----</span></div>
+      </div>
+    </section>
 
-  <main class="container">
-    <div class="card">
-      <h2>شراء جواهر</h2>
-      <p>💎 100 جوهرة</p>
-      <p>السعر: <b>5000</b> نقطة</p>
-      <button id="buyGemsBtn" class="btn">شراء</button>
-      <p id="shopMsg" class="msg"></p>
-    </div>
+    <section class="panel">
+      <div class="panelHead">
+        <h2>🛒 عروض الجواهر</h2>
+        <div class="pill">100 💎 مقابل 5000 ⭐</div>
+      </div>
 
-    <div class="card">
-      <h3>زر إعادة ضبط (اختياري)</h3>
-      <p class="hint">يمسح نقاطك وتحدياتك من هذا الجهاز فقط.</p>
-      <button class="btn danger" onclick="dqResetAll()">Reset</button>
-    </div>
+      <div class="shopGrid">
+        <div class="shopCard">
+          <div class="shopTop">
+            <div class="gem">💎</div>
+            <div>
+              <div class="shopTitle">100 جوهرة</div>
+              <div class="shopSub">السعر: <b>5000</b> نقطة</div>
+            </div>
+          </div>
+
+          <button id="buyGemsBtn" class="btn">شراء الآن</button>
+          <div id="shopMsg" class="msg"></div>
+        </div>
+
+        <div class="shopCard soft">
+          <div class="shopTitle">ملاحظة</div>
+          <div class="shopSub">
+            الجواهر هنا داخل موقعك فقط (نظام نقاط تحفيزي).
+          </div>
+          <button class="btn danger" onclick="ffResetAll()">Reset (اختياري)</button>
+          <div class="msg dim">يمسح نقاطك/جواهرك من نفس الجهاز.</div>
+        </div>
+      </div>
+    </section>
   </main>
 
   <script src="app.js"></script>
