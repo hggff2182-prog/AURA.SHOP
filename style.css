@@ -75,3 +75,35 @@ body{
 .points{
   margin-top:10px;
 }
+.wrap{max-width:920px;margin:18px auto;padding:0 14px}
+.top{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:14px}
+.brand{display:flex;align-items:center;gap:12px}
+.logo{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.08);font-weight:700}
+.title{font-size:18px;font-weight:800}
+.sub{opacity:.75;font-size:12px}
+
+.nav{display:flex;gap:10px;justify-content:center;padding:10px 14px}
+.nav a{padding:10px 14px;border-radius:14px;background:rgba(255,255,255,.06);text-decoration:none;color:#fff}
+.nav a.active{background:rgba(255,255,255,.14)}
+
+.user-box{min-width:220px}
+.login-row{display:flex;gap:8px}
+.login-row input{flex:1;padding:10px;border-radius:12px;border:1px solid rgba(255,255,255,.12);background:rgba(0,0,0,.2);color:#fff}
+.login-row button{padding:10px 12px;border-radius:12px;border:0;background:#2f6df6;color:#fff;cursor:pointer}
+.welcome-row{display:flex;align-items:center;gap:10px}
+.welcome-row button{padding:8px 10px;border-radius:12px;border:0;background:rgba(255,255,255,.12);color:#fff;cursor:pointer}
+
+.stats{display:flex;gap:10px;justify-content:center;margin:14px 0}
+.pill{padding:10px 14px;border-radius:999px;background:rgba(255,255,255,.08)}
+
+.card{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);border-radius:18px;padding:16px}
+.h2{margin:0 0 12px}
+
+.shop-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}
+.shop-item{background:rgba(0,0,0,.18);border:1px solid rgba(255,255,255,.08);border-radius:18px;padding:14px}
+.shop-top{display:flex;align-items:center;gap:12px;margin-bottom:10px}
+.gem{font-size:28px}
+.shop-title{font-weight:900;font-size:18px}
+.shop-sub{opacity:.75;font-size:13px}
+.btn{width:100%;padding:12px;border-radius:14px;border:0;background:#f5a623;color:#111;font-weight:900;cursor:pointer}
+.note{margin-top:10px;opacity:.85;font-size:13px}
