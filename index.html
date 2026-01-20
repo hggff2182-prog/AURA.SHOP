@@ -3,57 +3,111 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>FF Daily Challenges</title>
+  <title>AURA SHOP - Free Fire Daily</title>
   <link rel="stylesheet" href="style.css" />
 </head>
+
 <body>
+  <!-- خلفية -->
   <div class="bg"></div>
 
+  <!-- الهيدر -->
   <header class="top">
     <div class="brand">
       <div class="logo">FF</div>
-      <div>
-        <div class="title">Free Fire Daily</div>
-        <div class="sub">تحديات يومية + متجر جواهر</div>
+      <div class="brandText">
+        <div class="brandName">AURA SHOP</div>
+        <div class="brandSub">Daily Quests • نقاط • متجر</div>
       </div>
     </div>
 
-    <nav class="nav">
-      <a class="active" href="index.html">التحديات</a>
-      <a href="store.html">المتجر</a>
-    </nav>
+    <!-- نقاط اليوم -->
+    <div class="points-pill">
+      <span class="star">⭐</span>
+      <span>نقاطك:</span>
+      <b id="points">0</b>
+    </div>
   </header>
 
+  <!-- ✅ صندوق المستخدم (هنا مكانه الصح) -->
+  <section class="user-area">
+    <div id="userBox" class="user-box"></div>
+  </section>
+
+  <!-- شريط التنقل -->
+  <nav class="nav">
+    <a class="nav-item active" href="index.html">الرئيسية</a>
+    <a class="nav-item" href="store.html">المتجر</a>
+    <a class="nav-item" href="progress.html">الإنجاز</a>
+    <a class="nav-item" href="rewards.html">المكافآت</a>
+  </nav>
+
+  <!-- المحتوى -->
   <main class="wrap">
-    <section class="panel stats">
-      <div class="stat">
-        <div class="k">⭐ النقاط</div>
-        <div class="v" id="points">0</div>
-      </div>
-      <div class="stat">
-        <div class="k">💎 الجواهر</div>
-        <div class="v" id="gems">0</div>
-      </div>
-      <div class="stat">
-        <div class="k">📅 تحديات اليوم</div>
-        <div class="v"><span id="todayKey">----</span></div>
+    <section class="card hero">
+      <h1 class="h1">تحديات فري فاير اليومية 🔥</h1>
+      <p class="p">
+        اختار تحدي ونفّذو — كل تحدي يديك نقاط.  
+        النقاط بتتقعد عندك حتى لو طلعت ورجعت (محفوظة في الجهاز).
+      </p>
+      <div class="hint">
+        💡 نصيحة: بعد ما تنفّذ التحدي اضغط <b>نفّذ</b> عشان يتحسب.
       </div>
     </section>
 
-    <section class="panel">
-      <div class="panelHead">
-        <h2>🔥 10 تحديات اليوم</h2>
-        <div class="pill">كل تحدي = +100 نقطة</div>
+    <!-- قائمة التحديات (app.js بيملاها هنا) -->
+    <section class="card">
+      <div class="card-head">
+        <h2 class="h2">التحديات</h2>
+        <div class="mini">
+          اليوم: <span id="todayLabel">—</span>
+        </div>
       </div>
 
-      <div id="challenges" class="grid"></div>
+      <!-- ✅ مهم: نفس id اللي app.js بستعمله -->
+      <div id="challenges" class="challenges"></div>
 
-      <div class="footNote">
-        التحديات تتجدد تلقائيًا كل يوم. النقاط والجواهر محفوظة في نفس الجهاز.
+      <div class="footerNote">
+        ✨ لو ما ظهرت التحديات: اتأكد إن ملف <b>app.js</b> موجود ومربوط.
       </div>
+    </section>
+
+    <!-- اختصارات -->
+    <section class="grid">
+      <a class="tile" href="store.html">
+        <div class="tileTitle">المتجر</div>
+        <div class="tileSub">اشتري مكافآت بالنقاط</div>
+      </a>
+
+      <a class="tile" href="progress.html">
+        <div class="tileTitle">الإنجاز</div>
+        <div class="tileSub">شوف تقدمك</div>
+      </a>
+
+      <a class="tile" href="rewards.html">
+        <div class="tileTitle">المكافآت</div>
+        <div class="tileSub">قائمة الجوائز</div>
+      </a>
     </section>
   </main>
 
+  <!-- الفوتر -->
+  <footer class="bottom">
+    <span>© AURA SHOP</span>
+    <span class="dot">•</span>
+    <span>Free Fire Daily Quests</span>
+  </footer>
+
+  <!-- سكربت -->
   <script src="app.js"></script>
+
+  <!-- تاريخ اليوم في الواجهة -->
+  <script>
+    const d = new Date();
+    const pad = (n) => String(n).padStart(2, "0");
+    const label = `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
+    const el = document.getElementById("todayLabel");
+    if (el) el.textContent = label;
+  </script>
 </body>
 </html>
