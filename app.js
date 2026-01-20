@@ -1,156 +1,84 @@
-// ===== FF Daily Challenges + Points + Store =====
+// ===== AURA.SHOP - app.js (User + Points) =====
 
-const DAILY_COUNT = 10;
-const POINTS_PER_CHALLENGE = 100;
+// ===== User (Local Account) =====
+const USER_KEY = "aura_user";
 
-const SHOP_COST_POINTS = 5000;
-const SHOP_GEMS_AMOUNT = 100;
-
-// تحديات فري فاير (زِد براحتك)
-const ALL_CHALLENGES = [
-  "العب مباراة كلاسيك واحدة",
-  "العب مباراة رانك واحدة",
-  "اقتُل 5 أعداء اليوم",
-  "اعمل 2 Headshots اليوم",
-  "استخدم 3 Gloo Walls في مباراة",
-  "اجمع درع Level 3 مرة",
-  "افتح 3 صناديق Loot",
-  "وصل للـ Top 10 مرة",
-  "اعمل Revive لزميل مرة",
-  "اكسب Booyah مرة واحدة",
-  "اقتل بسلاح AR مرتين",
-  "اقتل بسلاح SMG مرتين",
-  "اقتل بسلاح Shotgun مرة",
-  "اقتل بسنايبر مرة",
-  "استعمل 2 Medkits",
-  "اعمل 300+ Damage في مباراة",
-  "اركب سيارة مرة",
-  "العب مع سكواد مباراة",
-  "اجمع 200 Ammo زيادة",
-  "عيش 8 دقائق في مباراة"
-];
-
-// مفاتيح التخزين
-const K = {
-  points: "ff_points",
-  gems: "ff_gems",
-  daily: "ff_daily"
-};
-
-const todayKey = new Date().toISOString().split("T")[0];
-
-// أدوات
-function getNum(key, fallback = 0) {
-  const v = localStorage.getItem(key);
-  const n = v === null ? fallback : Number(v);
-  return Number.isFinite(n) ? n : fallback;
-}
-function setNum(key, value) {
-  localStorage.setItem(key, String(value));
-}
-function shuffle(arr) {
-  return [...arr].sort(() => Math.random() - 0.5);
+function getUser() {
+  return localStorage.getItem(USER_KEY);
 }
 
-// تحميل الرصيد
-let points = getNum(K.points, 0);
-let gems = getNum(K.gems, 0);
-
-// تحديات اليوم
-let daily = JSON.parse(localStorage.getItem(K.daily) || "null");
-if (!daily || daily.date !== todayKey) {
-  daily = {
-    date: todayKey,
-    challenges: shuffle(ALL_CHALLENGES).slice(0, DAILY_COUNT),
-    completed: []
-  };
-  localStorage.setItem(K.daily, JSON.stringify(daily));
+function setUser(name) {
+  localStorage.setItem(USER_KEY, name);
 }
 
-// تحديث التاريخ في الواجهة
-const todayEl = document.getElementById("todayKey");
-if (todayEl) todayEl.textContent = todayKey;
+function logoutUser() {
+  localStorage.removeItem(USER_KEY);
+  location.reload();
+}
 
-// تحديث النقاط والجواهر في الواجهة
-const pointsEl = document.getElementById("points");
-const gemsEl = document.getElementById("gems");
-if (pointsEl) pointsEl.textContent = points;
-if (gemsEl) gemsEl.textContent = gems;
+function renderUserBox() {
+  const box = document.getElementById("userBox");
+  if (!box) return;
 
-// رسم التحديات (في index)
-const challengesEl = document.getElementById("challenges");
-if (challengesEl) {
-  challengesEl.innerHTML = "";
+  const user = getUser();
 
-  daily.challenges.forEach((text, i) => {
-    const done = daily.completed.includes(i);
-
-    const div = document.createElement("div");
-    div.className = "cardCh";
-    div.innerHTML = `
-      <div>
-        <div class="chTitle">${text}</div>
-        <div class="chMeta">
-          <span class="badge">+${POINTS_PER_CHALLENGE}</span>
-          <span class="badge">${done ? "مكتمل" : "جاهز"}</span>
-        </div>
+  if (!user) {
+    box.innerHTML = `
+      <div class="login-row">
+        <input id="nameInput" placeholder="اكتب اسمك..." />
+        <button id="saveNameBtn">دخول</button>
       </div>
-      <button class="btn" ${done ? "disabled" : ""} data-i="${i}">
-        ${done ? "تم ✅" : "نفّذت"}
-      </button>
     `;
-    challengesEl.appendChild(div);
-  });
 
-  challengesEl.addEventListener("click", (e) => {
-    const btn = e.target.closest("button[data-i]");
-    if (!btn) return;
-    completeChallenge(Number(btn.dataset.i));
-  });
-}
+    const btn = document.getElementById("saveNameBtn");
+    if (btn) {
+      btn.onclick = () => {
+        const val = document.getElementById("nameInput").value.trim();
+        if (val.length < 2) return alert("اكتب اسم صحيح");
+        setUser(val);
+        location.reload();
+      };
+    }
+  } else {
+    box.innerHTML = `
+      <div class="welcome-row">
+        <span>أهلًا يا <b>${user}</b> 👋</span>
+        <button id="logoutBtn">خروج</button>
+      </div>
+    `;
 
-function completeChallenge(i) {
-  if (daily.completed.includes(i)) return;
-
-  daily.completed.push(i);
-  localStorage.setItem(K.daily, JSON.stringify(daily));
-
-  points += POINTS_PER_CHALLENGE;
-  setNum(K.points, points);
-
-  if (pointsEl) pointsEl.textContent = points;
-
-  const btn = document.querySelector(`button[data-i="${i}"]`);
-  if (btn) {
-    btn.disabled = true;
-    btn.textContent = "تم ✅";
+    const out = document.getElementById("logoutBtn");
+    if (out) out.onclick = logoutUser;
   }
 }
 
-// متجر (في store)
-const buyBtn = document.getElementById("buyGemsBtn");
-const shopMsg = document.getElementById("shopMsg");
+renderUserBox();
 
-if (buyBtn) {
-  buyBtn.addEventListener("click", () => {
-    if (points < SHOP_COST_POINTS) {
-      if (shopMsg) shopMsg.textContent = "نقاطك ما كفاية 😅 لازم 5000";
-      return;
-    }
-
-    points -= SHOP_COST_POINTS;
-    gems += SHOP_GEMS_AMOUNT;
-
-    setNum(K.points, points);
-    setNum(K.gems, gems);
-
-    if (pointsEl) pointsEl.textContent = points;
-    if (gemsEl) gemsEl.textContent = gems;
-
-    if (shopMsg) shopMsg.textContent = `تم الشراء ✅ +${SHOP_GEMS_AMOUNT} 💎`;
-    setTimeout(() => { if (shopMsg) shopMsg.textContent = ""; }, 2500);
-  });
+// ===== Points (Per User) =====
+function pointsKey() {
+  const user = getUser() || "guest";
+  return `points_${user}`;
 }
 
-// Reset اختياري
-win
+function getPoints() {
+  return parseInt(localStorage.getItem(pointsKey()) || "0", 10);
+}
+
+function setPoints(v) {
+  localStorage.setItem(pointsKey(), String(v));
+}
+
+function addPoints(amount) {
+  const now = getPoints();
+  setPoints(now + amount);
+}
+
+// ===== Optional: show points if element exists =====
+// ضع عنصر في HTML اسمه: <span id="pointsValue"></span>
+function renderPoints() {
+  const el = document.getElementById("pointsValue");
+  if (!el) return;
+  el.textContent = getPoints();
+}
+
+renderPoints();
