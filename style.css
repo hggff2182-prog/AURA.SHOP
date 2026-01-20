@@ -1,107 +1,77 @@
-// ===== تسجيل دخول محلي =====
-const USER_KEY = "aura_user";
-
-function getUser() {
-  return localStorage.getItem(USER_KEY);
-}
-function setUser(name) {
-  localStorage.setItem(USER_KEY, name);
-}
-function logoutUser() {
-  localStorage.removeItem(USER_KEY);
-  location.reload();
+body{
+  margin:0;
+  font-family:Tahoma;
+  background:#0b1020;
+  color:#fff;
 }
 
-// ===== النقاط (لكل اسم) =====
-function pointsKey() {
-  const u = getUser() || "guest";
-  return "points_" + u;
+.nav{
+  display:flex;
+  gap:12px;
+  padding:12px;
+  background:#12183a;
+  justify-content:center;
 }
-function getPoints() {
-  return parseInt(localStorage.getItem(pointsKey()) || "0");
+.nav a{
+  color:#bbb;
+  text-decoration:none;
 }
-function setPoints(v) {
-  localStorage.setItem(pointsKey(), String(v));
-}
+.nav a.active{color:#00e0ff}
 
-// ===== واجهة تسجيل الدخول =====
-function renderUserBox() {
-  const box = document.getElementById("userBox");
-  const user = getUser();
-
-  if (!user) {
-    box.innerHTML = `
-      <div class="avatar">👤</div>
-      <input id="nameInput" placeholder="الاسم" />
-      <input type="password" placeholder="كلمة السر (اختياري)" />
-      <button onclick="login()">Sign In</button>
-      <label class="stay"><input type="checkbox" checked /> Stay signed in</label>
-    `;
-  } else {
-    box.innerHTML = `
-      <div class="welcome">
-        أهلاً <b>${user}</b> 👋
-        <button onclick="logoutUser()">خروج</button>
-      </div>
-    `;
-  }
-}
-function login() {
-  const name = document.getElementById("nameInput").value.trim();
-  if (name.length < 2) return alert("اكتب اسم صحيح");
-  setUser(name);
-  location.reload();
-}
-renderUserBox();
-
-// ===== مفاتيح يومية لكل مستخدم =====
-function todayKey() {
-  return new Date().toISOString().split("T")[0]; // YYYY-MM-DD
-}
-function dailyKey(name) {
-  return `dailyQuiz_${name}_${todayKey()}`;
+.container{
+  max-width:600px;
+  margin:auto;
+  padding:16px;
 }
 
-// ===== بنك أسئلة صعبة (صح/غلط) =====
-const QUESTION_BANK = [
-  { q: "في فري فاير: الـGloo Wall يمنع ضرر القنابل بالكامل دائماً.", a: false },
-  { q: "سلاح M1887 معروف بأنه قوي جداً في المدى القريب.", a: true },
-  { q: "الHeadshot damage بيتأثر بمسافة الضربة في كل الأسلحة بنفس الطريقة.", a: false },
-  { q: "الـArmor يقلل الضرر لكنه ما يمنع الـHeadshot multiplier.", a: true },
-  { q: "إذا ping عالي دايمًا معناها سيرفرك بعيد فقط.", a: false },
-  { q: "في الإعدادات: حساسية General بتأثر على الكاميرا حتى بدون سلاح.", a: true },
-  { q: "الـAim Assist يشتغل بنفس القوة في كل الأجهزة.", a: false },
-  { q: "سلاح UMP يعتبر من أفضل SMG للتوازن بين مدى وثبات.", a: true },
-  { q: "الطلقات في الأسلحة AR بتكون بدون recoil نهائي لو وقفت ثابت.", a: false },
-  { q: "الـDrag headshot يحتاج سحب بسيط للأعلى مع timing.", a: true },
-
-  { q: "الـGloo Wall يقدر يقفل عليك الضرر من كل الجهات حتى لو في زاوية مفتوحة.", a: false },
-  { q: "تغيير DPI ممكن يحسن تحكم السحب لكن ما يعوض تمرين اليد.", a: true },
-  { q: "سلاح Groza غالباً قوي في الضرر لكنه أصعب في التحكم.", a: true },
-  { q: "الـSensitivity العالية دائماً أفضل للهيدشوت.", a: false },
-  { q: "الـHip fire أدق من الـADS في كل الحالات.", a: false },
-  { q: "الـJump Shot ممكن يسبب تقليل دقة لبعض الأسلحة.", a: true },
-  { q: "الـOne-tap أسهل في SMG من DMR غالباً.", a: false },
-  { q: "الـBullet spread بيتغير حسب الحركة (جري/قفز).", a: true },
-  { q: "الـAim tracking أهم من flick في قتال المدى المتوسط.", a: true },
-  { q: "الـGloo placement السريع يعتمد على layout أكثر من الحساسية فقط.", a: true },
-
-  { q: "الـHeadshot rate بيتأثر لو حجم زر الضرب صغير جداً.", a: true },
-  { q: "الـFPS العالي ما عنده أي تأثير على الإحساس بالسحب.", a: false },
-  { q: "الـCustom HUD يساعد تقلل وقت رد الفعل.", a: true },
-  { q: "الـAuto pickup لازم يكون مقفول دائماً.", a: false },
-  { q: "الـCrosshair placement قبل الاشتباك يقلل السحب الزائد.", a: true },
-  { q: "الـGloo wall spam ما ينفع ضد لاعب محترف نهائياً.", a: false },
-  { q: "سلاح Desert Eagle ممكن يعمل ضغط قوي لو تصويبك ممتاز.", a: true },
-  { q: "الـADS يقلل recoil في أغلب الأسلحة مقارنة بالHip.", a: true },
-  { q: "الـSound cues (خطوات) ما بتفيد لو ما عندك سماعة.", a: false },
-  { q: "الـPeek من الزاوية يقلل مساحة جسمك المكشوفة.", a: true }
-];
-
-// ===== اختيار 10 أسئلة يومياً لكل مستخدم =====
-function shuffle(arr) {
-  return [...arr].sort(() => Math.random() - 0.5);
+.card{
+  background:#12183a;
+  padding:20px;
+  border-radius:16px;
 }
 
-function getDailySet() {
-  const user
+.login-card{
+  max-width:360px;
+  margin:20px auto;
+  background:#12183a;
+  padding:20px;
+  border-radius:16px;
+  text-align:center;
+}
+.avatar{
+  font-size:48px;
+  margin-bottom:10px;
+}
+.login-card input{
+  width:100%;
+  padding:10px;
+  margin:6px 0;
+  border-radius:10px;
+  border:none;
+}
+.login-card button{
+  width:100%;
+  padding:10px;
+  border:none;
+  border-radius:10px;
+  background:#00e0ff;
+  font-weight:bold;
+}
+.stay{
+  display:block;
+  margin-top:8px;
+  font-size:12px;
+  color:#aaa;
+}
+
+.answers button{
+  padding:10px 14px;
+  margin:6px;
+}
+.start{
+  margin-top:10px;
+  padding:10px;
+}
+.points{
+  margin-top:10px;
+}
